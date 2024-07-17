@@ -1,0 +1,156 @@
+
+
+.App {
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Navbar styling */
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    color: white;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.navbar h1 {
+    margin: 0;
+}
+
+.navbar button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.navbar button:hover {
+    background-color: #45a049;
+}
+
+
+
+.contact-manager,
+.login-form {
+    background-color: #f0f0f0;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    margin-right: 10px;
+}
+
+.login-form {
+    width: 350px;
+    margin: auto;
+}
+
+.login-form h1,
+.add-contact-form h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.login-form input,
+.add-contact-form input,
+.add-contact-form button {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.login-form button,
+.add-contact-form button {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.add-contact-form {
+    max-width: 500px;
+    margin: auto;
+}
+
+.add-contact-form input[type="text"],
+.add-contact-form input[type="email"],
+.add-contact-form input[type="tel"] {
+    width: calc(100% - 20px);
+    margin-right: 0;
+}
+
+/* Contacts list styling */
+
+.contacts-list ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.contacts-list li {
+    margin-bottom: 10px;
+}
+
+.contacts-list li button {
+    margin-left: 10px;
+    cursor: pointer;
+}
+
+
+
+button {
+    background-color: #008CBA;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-right: 10px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+button:hover {
+    background-color: #005f6b;
+}
+
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="tel"]:focus {
+    outline: none;
+    border-color: #008CBA;
+}
+
+.item {
+    width: 100%;
+    padding: 10px;
+}
+
+.ed {
+    right: 5px;
+}
