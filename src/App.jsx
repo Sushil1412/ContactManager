@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
-
+import 'bootstrap/dist/css/bootstrap.css';
 import ContactList from './components/ContactList';
+import AddContact from './components/AddContactForm';
 import RegistrationForm from './components/RegistrationForm';
+import LoginForm from './components/LoginFom';
+import EditContact from './components/EditContactForm';
+import NavBar from './components/NavBar';
 
 function App() {
   const [contacts, setContacts] = useState([]);
@@ -16,17 +19,18 @@ function App() {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [showRegistration, setShowRegistration] = useState(false);
+  const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
     const storedToken = localStorage.getItem('token');
     if (storedToken) {
       setToken(storedToken);
       setLoggedIn(true);
-      fetchContacts();
+      fetchContacts(storedToken);
     }
   }, []);
 
-  const fetchContacts = async () => {
+  const fetchContacts = async (token) => {
     try {
       const res = await axios.get('http://localhost:8001/contacts', {
         headers: { Authorization: token },
@@ -60,19 +64,8 @@ function App() {
     setSearchResults([]);
   };
 
-  const handleChange = e => {
-    const { name, value } = e.target;
-    if (name === 'username') {
-      setUsername(value);
-    } else if (name === 'password') {
-      setPassword(value);
-    } else if (name === 'searchTerm') {
-      setSearchTerm(value);
-      handleSearch(value);
-    }
-  };
-
-  const handleSearch = searchTerm => {
+  const handleSearch = (searchTerm) => {
+    setSearchTerm(searchTerm);
     if (searchTerm.trim() === '') {
       setSearchResults(contacts);
     } else {
@@ -83,19 +76,33 @@ function App() {
     }
   };
 
+  const toggleDarkMode = () => {
+    setDarkMode(!darkMode);
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (name === 'username') {
+      setUsername(value);
+    } else if (name === 'password') {
+      setPassword(value);
+    } else if (name === 'searchTerm') {
+      handleSearch(value);
+    }
+  };
+
   return (
     <Router>
-      <div className="App">
-        {loggedIn ? (
-          <div className="contact-manager">
-            <h1>Contact Manager</h1>
-            <button onClick={handleLogout}>Logout</button>
-
-            <Routes>
-              <Route path="/" element={<ContactList contacts={searchResults} fetchContacts={fetchContacts} setContacts={setContacts} token={token} />} />
-            </Routes>
-          </div>
-        ) : (
+      <div className={`App ${darkMode ? 'dark-mode' : ''}`}>
+        {loggedIn && (
+          <NavBar
+            handleLogout={handleLogout}
+            handleSearch={handleSearch}
+            darkMode={darkMode}
+            toggleDarkMode={toggleDarkMode}
+          />
+        )}
+        {!loggedIn ? (
           <div>
             {showRegistration ? (
               <div className="registration-container">
@@ -108,36 +115,29 @@ function App() {
                 </p>
               </div>
             ) : (
-              <div className="login-form">
-                <h1>Login</h1>
-                <input
-                  className='in'
-                  type="text"
-                  name="username"
-                  placeholder="Username"
-                  value={username}
-                  onChange={handleChange}
-                  required
+              <div className="login-container">
+                <LoginForm
+                  username={username}
+                  password={password}
+                  handleChange={handleChange}
+                  handleLogin={handleLogin}
+                  setShowRegistration={setShowRegistration}
                 />
-                <input
-                  className='in'
-                  type="password"
-                  name="password"
-                  placeholder="Password"
-                  value={password}
-                  onChange={handleChange}
-                  required
-                />
-                <button onClick={handleLogin}>Login</button>
-                <p className="text-center">
-                  Don't have an account?{' '}
-                  <button className="btn btn-link" onClick={() => setShowRegistration(true)}>
-                    Register here
-                  </button>
-                </p>
               </div>
             )}
           </div>
+        ) : (
+
+          <Routes>
+            {/* <Route path="/" element={<LoginForm username={username}
+              password={password}
+              handleChange={handleChange}
+              handleLogin={handleLogin}
+              setShowRegistration={setShowRegistration} />} /> */}
+            <Route path="/" element={<ContactList contacts={searchResults} token={token} />} />
+            <Route path="/add" element={<AddContact token={token} />} />
+            <Route path="/edit/:contactId" element={<EditContact token={token} fetchContacts={fetchContacts} />} />
+          </Routes>
         )}
       </div>
     </Router>

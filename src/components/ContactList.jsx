@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import EditContactForm from './EditContactForm';
+import { Link } from 'react-router-dom';
+import { IoMdSearch } from 'react-icons/io'; // Import search icon from react-icons
+import './ContactList.css';
+import { FaEdit } from "react-icons/fa";
+import { MdDeleteOutline } from "react-icons/md";
 
 function ContactList({ token }) {
     const [contacts, setContacts] = useState([]);
-    const [editingContactId, setEditingContactId] = useState(null);
-    const [addingContact, setAddingContact] = useState(false);
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        phone: '',
-    });
     const [searchTerm, setSearchTerm] = useState('');
     const [searchResults, setSearchResults] = useState([]);
 
@@ -19,11 +16,14 @@ function ContactList({ token }) {
     }, []);
 
     useEffect(() => {
-        setSearchResults(
-            contacts.filter(contact =>
+        if (searchTerm.trim() === '') {
+            setSearchResults(contacts); // Show all contacts if searchTerm is empty
+        } else {
+            const filteredContacts = contacts.filter(contact =>
                 contact.name.toLowerCase().includes(searchTerm.toLowerCase())
-            )
-        );
+            );
+            setSearchResults(filteredContacts); // Update searchResults with filtered contacts
+        }
     }, [searchTerm, contacts]);
 
     const fetchContacts = async () => {
@@ -32,35 +32,7 @@ function ContactList({ token }) {
                 headers: { Authorization: token },
             });
             setContacts(res.data);
-        } catch (err) {
-            console.error(err);
-        }
-    };
-
-    const handleEdit = id => {
-        setEditingContactId(id);
-    };
-
-    const handleCancelEdit = () => {
-        setEditingContactId(null);
-    };
-
-    const handleAddContact = () => {
-        setAddingContact(true);
-    };
-
-    const handleCancelAdd = () => {
-        setAddingContact(false);
-        setFormData({ name: '', email: '', phone: '' });
-    };
-
-    const handleUpdateContact = async (id, updatedData) => {
-        try {
-            await axios.put(`http://localhost:8001/contacts/edit/${id}`, updatedData, {
-                headers: { Authorization: token },
-            });
-            fetchContacts();
-            setEditingContactId(null);
+            setSearchResults(res.data); // Initialize searchResults with fetched contacts
         } catch (err) {
             console.error(err);
         }
@@ -71,102 +43,36 @@ function ContactList({ token }) {
             await axios.delete(`http://localhost:8001/contacts/delete/${id}`, {
                 headers: { Authorization: token },
             });
-            fetchContacts();
+            fetchContacts(); // Fetch contacts again after deletion
         } catch (err) {
             console.error(err);
         }
-    };
-
-    const handleAddSubmit = async e => {
-        e.preventDefault();
-        try {
-            await axios.post('http://localhost:8001/contacts/add', formData, {
-                headers: { Authorization: token },
-            });
-            fetchContacts();
-            setAddingContact(false);
-            setFormData({ name: '', email: '', phone: '' });
-        } catch (err) {
-            console.error(err);
-        }
-    };
-
-    const handleChange = e => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
     const handleSearchChange = e => {
-        setSearchTerm(e.target.value);
+        setSearchTerm(e.target.value); // Update searchTerm state with input value
     };
 
     return (
-        <div>
-            <nav class="navbar bg-body-tertiary">
-                <div class="container-fluid">
-                    <form class="d-flex" role="search">
-                        <input class="form-control me-2" type="search" onChange={handleSearchChange} placeholder="Search by Name" aria-label="Search" value={searchTerm} />
-
-                    </form>
-                </div>
-            </nav>
-            <button onClick={handleAddContact}>Add Contact</button>
-            {addingContact && (
-
-                <form onSubmit={handleAddSubmit} >
-                    <div className='ad'>
-                        <input
-                            type="text"
-                            name="name"
-                            value={formData.name}
-                            onChange={handleChange}
-                            placeholder="Name"
-                            required
-                        />
-                        <input
-                            type="email"
-                            name="email"
-                            value={formData.email}
-                            onChange={handleChange}
-                            placeholder="Email"
-                            required
-                        />
-                        <input
-                            type="tel"
-                            name="phone"
-                            value={formData.phone}
-                            onChange={handleChange}
-                            placeholder="Phone"
-                            required
-                        />
-                        <button type="submit">Add Contact</button>
-                        <button type="button" onClick={handleCancelAdd}>Cancel</button>
-                    </div>
-                </form>
-
-            )}
-            {/* <input className='inpu'
-                type="text"
-                placeholder="Search by Name"
-                value={searchTerm}
-                onChange={handleSearchChange}
-            /> */}
-
-            <ul>
+        <div className="contacts-container">
+            <div className="search-container">
+                <input
+                    type="search"
+                    className="search-input"
+                    placeholder="Search by Name"
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                />
+                <IoMdSearch className="search-icon" />
+            </div>
+            <ul className="contacts-list">
                 {searchResults.map(contact => (
-                    <li key={contact._id} className='item d-flex justify-content-between align-items-center'>
-                        <span>{contact.name}, </span>
-                        <span>{contact.email}, </span>
-                        <span>{contact.phone}</span>
-                        <button className='btn btn-primary ml-2 ed' onClick={() => handleEdit(contact._id)}>Edit</button>
-                        <button className='btn btn-primary ml-2 ed' onClick={() => handleDelete(contact._id)}>Delete</button>
-                        {editingContactId === contact._id && (
-                            <EditContactForm
-                                contact={contact}
-                                token={token}
-                                onUpdate={(id, updatedData) => handleUpdateContact(id, updatedData)}
-                                onCancelEdit={handleCancelEdit}
-                            />
-                        )}
+                    <li key={contact._id} className="contact-item">
+                        <span className='col-2'>{contact.name}, </span>
+                        <span className='col-3'>{contact.email}, </span>
+                        <span className='col-2'>{contact.phone}</span>
+                        <Link to={`/edit/${contact._id}`} className="edit-button col-1"><FaEdit /></Link>
+                        <a className="delete-button col-1" onClick={() => handleDelete(contact._id)}><MdDeleteOutline /></a>
                     </li>
                 ))}
             </ul>

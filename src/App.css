@@ -1,156 +1,122 @@
-
-
-.App {
-    font-family: Arial, sans-serif;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
 }
-
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-}
-
-/* Navbar styling */
 
 .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #333;
-    color: white;
-    padding: 10px;
-    margin-bottom: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #333;
+  color: white;
+  padding: 10px;
+  position: fixed;
+  top: 0;
+  z-index: 1000;
 }
 
-.navbar h1 {
-    margin: 0;
+.logout-button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 4px;
 }
 
-.navbar button {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 4px;
-}
-
-.navbar button:hover {
-    background-color: #45a049;
+.logout-button:hover {
+  background-color: #45a049;
 }
 
 
 
-.contact-manager,
-.login-form {
-    background-color: #f0f0f0;
-    padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    margin-right: 10px;
+
+
+.add-contact-button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 4px;
 }
 
-.login-form {
-    width: 350px;
-    margin: auto;
+.add-contact-button:hover {
+  background-color: #45a049;
 }
 
-.login-form h1,
-.add-contact-form h2 {
-    text-align: center;
-    margin-bottom: 20px;
+.contacts-container {
+  max-width: 12rem;
+  margin: 100px auto 0 auto;
+  padding: 20px;
 }
 
-.login-form input,
-.add-contact-form input,
-.add-contact-form button {
-    display: block;
-    width: 100%;
-    margin-bottom: 10px;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+.contacts-list {
+  list-style-type: none;
+  padding: 0;
 }
 
-.login-form button,
-.add-contact-form button {
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    cursor: pointer;
-    border-radius: 4px;
+.contact-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 10px;
 }
+
+.contact-item span {
+  margin-right: 10px;
+}
+
+/* .edit-button,
+.delete-button {
+  background-color: #008CBA;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+} */
+
+/* .edit-button:hover,
+.delete-button:hover {
+  background-color: #005f6b;
+} */
 
 .add-contact-form {
-    max-width: 500px;
-    margin: auto;
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f9f9f9;
 }
 
-.add-contact-form input[type="text"],
-.add-contact-form input[type="email"],
-.add-contact-form input[type="tel"] {
-    width: calc(100% - 20px);
-    margin-right: 0;
+.add-contact-form input {
+  width: calc(100% - 20px);
+  margin-bottom: 10px;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
 
-/* Contacts list styling */
-
-.contacts-list ul {
-    list-style-type: none;
-    padding: 0;
+.add-contact-form button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-right: 10px;
 }
 
-.contacts-list li {
-    margin-bottom: 10px;
-}
-
-.contacts-list li button {
-    margin-left: 10px;
-    cursor: pointer;
-}
-
-
-
-button {
-    background-color: #008CBA;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin-right: 10px;
-    cursor: pointer;
-    border-radius: 4px;
-}
-
-button:hover {
-    background-color: #005f6b;
+.add-contact-form button:hover {
+  background-color: #45a049;
 }
 
 
-input[type="text"]:focus,
-input[type="email"]:focus,
-input[type="tel"]:focus {
-    outline: none;
-    border-color: #008CBA;
-}
-
-.item {
-    width: 100%;
-    padding: 10px;
-}
-
-.ed {
-    right: 5px;
-}
+/* contactlist.css */
